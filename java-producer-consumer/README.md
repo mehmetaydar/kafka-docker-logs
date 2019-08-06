@@ -1,50 +1,127 @@
-# Medium Blog Kafka Udemy
-This is the source code supporting the blog post:
+# Kafka, Java, GO, Javascript, Postgres
 
-<https://medium.com/@stephane.maarek/how-to-use-apache-kafka-to-transform-a-batch-pipeline-into-a-real-time-one-831b48a6ad85>
+A dockerized solution for logs management. 
 
-# Building 
+It generates sample logs like below:
+```
+2019-03-21 09:59:17.992 INFO Istanbul Hello-from-Istanbul
+2019-03-21 09:59:17.996 WARN Tokyo Hello-from-Tokyo
+2019-03-21 09:59:18.057 FATAL Moskow Hello-from-Moskow
+2019-03-21 09:59:18.992 DEBUG Beijing Hello-from-Beijing
+2019-03-21 09:59:20.073 ERROR London Hello-from-London
+```
+Then it loads the logs to Kafka and Postgres. 
+Soon we will present results on a browser as realtime events.
+
+It utilizes ideas and codes from:
+
+<https://docs.confluent.io/current/quickstart/ce-docker-quickstart.html#ce-docker-quickstart> ,
+<https://medium.com/@stephane.maarek/how-to-use-apache-kafka-to-transform-a-batch-pipeline-into-a-real-time-one-831b48a6ad85> ,
+<https://github.com/mingrammer/flog> ,
+
+# Prerequisites and Building 
 
 All the instructions are in [run.sh](run.sh)
+
 ```bash
-# Download Confluent Platform 3.3.0 https://www.confluent.io/download/
-# Unzip and add confluent-3.3.0/bin to your PATH
+sudo nano /etc/hosts 
+#append the line below:
+127.0.1.1       broker scahema-registry zookeeper rest-proxy connect ksql-server ksql-cli ksql-datagen control-center postgres
+#save and exit
 
-# Download and install Docker for Mac / Windows / Linux and do
-docker-compose up -d
-# Alternatively start postgres manually on your laptop at port 5432 and username/password = postgres/postgres
+#install Prerequisites - if not already installed
+sudo apt-get install openjdk-8-jdk maven git curl
 
-# Start the Confluent platform using the Confluent CLI
-confluent start
+#if docker and docker-compose is not installed install it as below:
+curl -sSL https://get.docker.com/ | sh
+sudo usermod -aG docker {your-account-username}
+sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 
-# Create all the topics we're going to use for this demo
-kafka-topics --create --topic udemy-reviews --partitions 3 --replication-factor 1 --zookeeper localhost:2181
-kafka-topics --create --topic udemy-reviews-valid --partitions 3 --replication-factor 1 --zookeeper localhost:2181
-kafka-topics --create --topic udemy-reviews-fraud --partitions 3 --replication-factor 1 --zookeeper localhost:2181
-kafka-topics --create --topic long-term-stats --partitions 3 --replication-factor 1 --zookeeper localhost:2181
-kafka-topics --create --topic recent-stats --partitions 3 --replication-factor 1 --zookeeper localhost:2181
+#clone repository
+mkdir ~/bigdata && cd ~/bigdata
+git clone https://github.com/mehmetaydar/kafka-docker-logs.git teb-docker
 
-# Build and package the different project components (make sure you have maven installed)
+echo "Building java source code .."
+cd ~/bigdata/teb-docker/java-producer-consumer
 mvn clean package
 ```
 
-# Running
-All the instructions are in [run.sh](run.sh)
-Sample instructions:
+# Start dockers
 ```bash
-export COURSE_ID=1075642  # Kafka for Beginners Course
-java -jar udemy-reviews-producer/target/uber-udemy-reviews-producer-1.0-SNAPSHOT.jar
+cd ~/bigdata/teb-docker/java-producer-consumer
+#this will also generate logs in ~/bigdata/teb-docker/logs
+docker-compose up -d --build
+
+#check logs
+echo "Sample logs generated in: "
+ls -lth ~/bigdata/teb-docker/logs
+
+echo "10mb size of sample logs generated and splitted on every 2mb. To generate 20mb size of logs run: "
+docker exec mylog flog -t log -o /logs/gen.log -b 20485760 -s 1 -p 2097152 -w
+ls -lth ~/bigdata/teb-docker/logs
 ```
 
-# Video Tutorial:
-[![Udemy Kafka End To End Video (medium blog)](https://img.youtube.com/vi/h5i94umfzMM/0.jpg)](https://www.youtube.com/watch?v=h5i94umfzMM)
+# Build kafka topics
+```bash
+echo "Building kafka topics: "
+docker exec broker kafka-topics --create --topic teb-logs --partitions 1 --replication-factor 1 --zookeeper zookeeper:2181
+docker exec broker kafka-topics --create --topic teb-logs-valid --partitions 1 --replication-factor 1 --zookeeper zookeeper:2181
+docker exec broker kafka-topics --create --topic teb-logs-fraud --partitions 1 --replication-factor 1 --zookeeper zookeeper:2181
 
-# Learning Kafka
+echo "list kafka topics: "
+docker exec broker kafka-topics --describe --zookeeper zookeeper:2181
+```
 
-If you want to explore all that Kafka has to offer, you can learn Kafka with my Udemy courses:
-- [Kafka for Beginners](http://bit.ly/kafka-beginners-medium)
-- [Kafka Connect](http://bit.ly/kafka-connect-medium)
-- [Kafka Streams](http://bit.ly/kafka-streams-medium)
-- [Kafka Setup and Administration](http://bit.ly/kafka-cluster-medium)
-- [Confluent Schema Registry & REST Proxy](http://bit.ly/confluent-schema-registry-medium)
-- [Kafka Security](http://bit.ly/kafka-security-medium)
+# Start kafka producers and consumers
+```bash
+echo "on another terminal please start console consumers for main teb-logs: "
+docker exec schema-registry kafka-avro-console-consumer --topic teb-logs --bootstrap-server broker:9092
+
+echo "on another terminal please start console consumers for main teb-logs-valid: "
+docker exec schema-registry kafka-avro-console-consumer --topic teb-logs-valid --bootstrap-server broker:9092
+
+echo "on another terminal please start console consumers for main teb-logs-fraud: "
+docker exec schema-registry kafka-avro-console-consumer --topic teb-logs-fraud --bootstrap-server broker:9092
+
+echo "And launch our first producer for sample logs in another terminal ! "
+java -jar ~/bigdata/teb-docker/java-producer-consumer/udemy-reviews-producer/target/uber-udemy-reviews-producer-1.0-SNAPSHOT.jar
+
+echo "And launch producer for valid/fraud logs in another terminal ! "
+java -jar ~/bigdata/teb-docker/java-producer-consumer/udemy-reviews-fraud/target/uber-udemy-reviews-fraud-1.0-SNAPSHOT.jar
+
+echo "Load sample logs from kafka to postgre database: "
+curl -X POST http://connect:8083/connectors -H "Content-Type: application/json" -d '{
+        "name": "SinkTopics2",
+        "config": {
+			"connector.class" : "io.confluent.connect.jdbc.JdbcSinkConnector",
+			"tasks.max" : 3,
+			"connection.url" : "jdbc:postgresql://postgres:5432/postgres",
+			"connection.user" : "postgres",
+			"connection.password" : "postgres",
+			"insert.mode" : "upsert",
+			"pk.mode" : "record_value",
+			"pk.fields" : "created",
+			"auto.create" : true,
+			"topics" : "teb-logs",
+			"key.converter" : "org.apache.kafka.connect.storage.StringConverter"
+                }
+        }'
+
+echo "In another terminal - Run sqls on postgres to check the loaded logs - to exit run \q: "
+docker exec -it postgres psql -U postgres
+select * from "teb-logs";\q
+```
+
+# Stopping
+```bash
+echo "Stopping already running applications"
+cd ~/bigdata/teb-docker
+docker container stop $(docker container ls -a -q -f "label=io.confluent.docker")
+docker stop postgres
+docker stop mylog
+echo "y" | docker container prune
+```
+
+# Todo
+We will show a real time graphic of the aggregated log results.
