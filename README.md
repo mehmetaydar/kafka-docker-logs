@@ -46,6 +46,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 mkdir ~/bigdata && cd ~/bigdata
 git clone https://github.com/mehmetaydar/kafka-docker-logs.git teb-docker
 
+echo "Creating log folder:"
+cd ~/bigdata/teb-docker
+mkdir logs
+
 echo "Building java source code .."
 cd ~/bigdata/teb-docker/java-producer-consumer
 mvn clean package
