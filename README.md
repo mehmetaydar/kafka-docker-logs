@@ -4,11 +4,15 @@ A dockerized solution for logs management.
 
 It generates sample logs like below:
 ```
-2019-03-21 09:59:17.992 INFO Istanbul Hello-from-Istanbul
-2019-03-21 09:59:17.996 WARN Tokyo Hello-from-Tokyo
-2019-03-21 09:59:18.057 FATAL Moskow Hello-from-Moskow
-2019-03-21 09:59:18.992 DEBUG Beijing Hello-from-Beijing
-2019-03-21 09:59:20.073 ERROR London Hello-from-London
+ London   | 2019-08-06 20:48:36.482 | INFO  | Brain Beatty-6535278545336357
+ Beijing  | 2019-08-06 20:48:37.482 | FATAL | Kacey Metz-2221001727843784
+ Istanbul | 2019-08-06 20:48:38.482 | WARN  | Citlalli Mayer-375830681084863
+ Istanbul | 2019-08-06 20:48:39.482 | WARN  | Derek Blick-4383860516614541
+ Istanbul | 2019-08-06 20:48:40.482 | INFO  | Eldora Bauch-348738062311245
+ Beijing  | 2019-08-06 20:48:41.482 | ERROR | Clement Dickens-4174461203278603
+ Istanbul | 2019-08-06 20:48:42.482 | WARN  | Keshawn Medhurst-6532607805583183
+ Moscow   | 2019-08-06 20:48:43.482 | FATAL | Desmond Hyatt-376626163520652
+ Istanbul | 2019-08-06 20:48:44.482 | FATAL | Elinore Breitenberg-6512216753126578
 ```
 Then it loads the logs to Kafka and Postgres. 
 Soon we will present results on a browser as realtime events.
