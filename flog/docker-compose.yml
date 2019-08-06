@@ -1,0 +1,14 @@
+version: '2'
+services:
+  mylog:
+    hostname: mylog
+    container_name: mylog
+    build: .
+    #command: flog
+    tty: True
+    volumes:
+      - ./:/go/src/flog
+      - /home/bc/bigdata/logs:/logs
+      - /etc/timezone:/etc/timezone
+    #working_dir: /go/src/app
+    

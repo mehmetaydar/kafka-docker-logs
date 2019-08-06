@@ -1,0 +1,22 @@
+version: '2'
+services:
+  logflog:
+    hostname: logflog
+    container_name: logflog
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /home/bc/bigdata/logs:/logs
+
+  my-golang-app-run:
+    container_name: my-golang-app-run
+    build: .
+    command: go run main.go
+    volumes:
+      - .:/go/src/app
+    working_dir: /go/src/app
+    ports:
+      - "3030:3000"
+    environment:
+      PORT: 3001

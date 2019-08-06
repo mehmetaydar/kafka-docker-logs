@@ -1,0 +1,8 @@
+com/github/simplesteph/kafka/streams/udemy/aggregator/RecentReviewsTransformer.class
+com/github/simplesteph/kafka/streams/udemy/aggregator/ReviewTimestampExtractor.class
+com/github/simplesteph/kafka/streams/udemy/aggregator/AggregatorMain.class
+com/github/simplesteph/kafka/streams/udemy/aggregator/AppConfig.class
+com/github/simplesteph/avro/udemy/CourseStatistic.class
+com/github/simplesteph/kafka/streams/udemy/aggregator/RecentReviewsTransformerSupplier.class
+com/github/simplesteph/avro/udemy/CourseStatistic$1.class
+com/github/simplesteph/avro/udemy/CourseStatistic$Builder.class

@@ -1,0 +1,11 @@
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/src/main/java/com/github/simplesteph/kafka/producer/udemy/client/ReverseLineInputStream.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/target/generated-sources/avro/com/github/simplesteph/avro/udemy/User.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/src/main/java/com/github/simplesteph/kafka/producer/udemy/runnable/ReviewsFetcherThread.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/src/main/java/com/github/simplesteph/kafka/producer/udemy/model/ReviewApiResponse.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/target/generated-sources/avro/com/github/simplesteph/avro/udemy/Course.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/target/generated-sources/avro/com/github/simplesteph/avro/udemy/Review.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/src/main/java/com/github/simplesteph/kafka/producer/udemy/AppConfig.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/target/generated-sources/avro/com/github/simplesteph/avro/udemy/Log.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/src/main/java/com/github/simplesteph/kafka/producer/udemy/runnable/ReviewsAvroProducerThread.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/src/main/java/com/github/simplesteph/kafka/producer/udemy/ReviewsProducerMain.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-producer/src/main/java/com/github/simplesteph/kafka/producer/udemy/client/UdemyRESTClient.java

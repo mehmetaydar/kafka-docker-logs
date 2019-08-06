@@ -1,0 +1,6 @@
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-aggregator/src/main/java/com/github/simplesteph/kafka/streams/udemy/aggregator/AppConfig.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-aggregator/src/main/java/com/github/simplesteph/kafka/streams/udemy/aggregator/RecentReviewsTransformerSupplier.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-aggregator/src/main/java/com/github/simplesteph/kafka/streams/udemy/aggregator/ReviewTimestampExtractor.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-aggregator/target/generated-sources/avro/com/github/simplesteph/avro/udemy/CourseStatistic.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-aggregator/src/main/java/com/github/simplesteph/kafka/streams/udemy/aggregator/AggregatorMain.java
+/home/bc/bigdata/medium-blog-kafka-udemy/udemy-reviews-aggregator/src/main/java/com/github/simplesteph/kafka/streams/udemy/aggregator/RecentReviewsTransformer.java
